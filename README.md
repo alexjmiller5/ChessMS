@@ -58,3 +58,5 @@ Deliberately add a delay to text response
 Track lifetime wins/losses/draws
 
 User can ask for W/L/D any time
+
+Promotion
