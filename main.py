@@ -6,7 +6,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 # imported local files
 import chess_manager as cm
 import fen_parser as fp
-import query as q
+import database.query as q
 
 # account_sid = 'ACe0a977fae42fe85c925bb4bd3eeaf0f1' # replace later with os.environ[]
 # auth_token = '91348d25f4044be9d69bdd9c2ed3db9a' # replace later with os.environ[]
@@ -118,4 +118,4 @@ def incoming_sms():
     return str(resp)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5000, debug=True)
