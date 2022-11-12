@@ -1,6 +1,6 @@
 # bostonhacks-2022
 
-Alex Miller, Jared Pincus, _____
+Alex Miller, Jared Pincus, Ruihang Liu
 
 
 # Project
