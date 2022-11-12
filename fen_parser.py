@@ -53,9 +53,11 @@ def fen_to_board(fen:str) -> Board:
     return tuple(map(fen_to_rank, bb))
 
 
+BLANK = '-'
+
 def square_to_ascii(sq:Square) -> str:
     if sq == None:
-        return '-'
+        return BLANK
     
     color, piece = sq
     s = chess.PIECE_SYMBOLS[piece]
@@ -76,13 +78,36 @@ def fen_to_ascii(fen:str) -> str:
 def char_to_unicode(c:str) -> str:
     if c in chess.UNICODE_PIECE_SYMBOLS:
         return chess.UNICODE_PIECE_SYMBOLS[c]
-    else: return c
+    elif c == BLANK:
+        return '·'
+    else: 
+        return c
 
 def fen_to_unicode(fen:str) -> str:
     s = fen_to_ascii(fen)
     return ''.join(map(char_to_unicode, s))
 
+def boxify(s:str) -> str:
+    ss = s.splitlines()
+    l = len(ss[0])
+    ss = [str(8-i) + '│' + s + '│' for i,s in enumerate(ss)]
+    files = '  a b c d e f g h  '
+    top = ' ┌' + '─' * l + '┐'
+    bot = ' └' + '─' * l + '┘'
+
+    return files + '\n' + top + '\n' + '\n'.join(ss) + '\n' + bot
+
+def fen_to_boxed_unicode(fen:str) -> str:
+    return boxify(fen_to_unicode(fen))
+    
+def fen_to_boxed_ascii(fen:str) -> str:
+    return boxify(fen_to_ascii(fen))
 
 if __name__ == '__main__':
     print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print()
     print(fen_to_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print()
+    print(fen_to_boxed_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print()
+    print(fen_to_boxed_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
