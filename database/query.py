@@ -52,9 +52,12 @@ def select(attribute : str, phone : str):
     query = "SELECT {at} FROM Users WHERE phone_number = \'{number}\'".format(at = attribute, number = phone)
     return get(query)[0]
 
-def update_board(phone : str, board : str):
-    query = "Update Users SET board = \'{b}\' WHERE Users.phone_number = \'{number}\'".format(b = board, number = phone)
+def update(attribute : str, phone : str, content):
+    query = "Update Users SET {at} = \'{c}\' WHERE Users.phone_number = \'{number}\'".format(at = attribute, c = content, number = phone)
     commit(query)
+
+def update_board(phone : str, board : str):
+    update("board", phone, board)
 
 def get_board_for(phone : str):
     query = "SELECT board FROM Users WHERE phone_number = \'{number}\'".format(number = phone)
@@ -64,8 +67,7 @@ def get_difficulty_level_for(phone : str):
     return select("difficulty_level", phone)
 
 def update_difficulty_level(phone : str, difficulty_level : int):
-    query = "Update Users SET difficulty_level = {d_l} WHERE Users.phone_number = \'{number}\'".format(d_l = difficulty_level, number = phone)
-    commit(query)
+    update("difficulty_level", phone, difficulty_level)
 
 def get_win(phone : str):
     return select("win", phone)
@@ -88,5 +90,3 @@ def update_draw(phone: str):
 def get_everything():
     query = '''SELECT * FROM Users'''
     return get(query)
-
-print(get_difficulty_level_for("617"))
