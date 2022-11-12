@@ -55,6 +55,10 @@ def get_board_for(phone : str):
     query = "SELECT board FROM Users WHERE phone_number = \'{number}\'".format(number = phone)
     return get(query)[0]
 
+def get_difficulty_level_for(phone : str):
+    query = "SELECT difficulty_level FROM Users WHERE phone_number = \'{number}\'".format(number = phone)
+    return get(query)[0]
+
 def update_difficulty_level(phone : str, difficulty_level : int):
     query = "Update Users SET difficulty_level = {d_l} WHERE Users.phone_number = \'{number}\'".format(d_l = difficulty_level, number = phone)
     commit(query)
