@@ -3,6 +3,8 @@
 from stockfish import Stockfish
 import fen_parser
 
+STARTING_BOARD = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
 # TODO stockfish parameters, e.g. depth, threads, ELO rating
 
 Fen = str  # Chessboard state
@@ -39,7 +41,7 @@ def make_ai_move(state:Fen) -> Fen:
 
 
 if __name__ == '__main__':
-    state = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    state = STARTING_BOARD
     print(fen_parser.fen_to_ascii(state) + '\n')
     state = make_user_move(state, 'e2e4')
     print(fen_parser.fen_to_ascii(state) + '\n')
