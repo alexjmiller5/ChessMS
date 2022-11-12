@@ -1,7 +1,6 @@
 # https://github.com/zhelyabuzhsky/stockfish
 
 from stockfish import Stockfish, StockfishException
-import fen_parser
 from enum import Enum
 from typing import List
 import chess
@@ -22,6 +21,7 @@ class Difficulty(Enum):
     MEDIUM = 1
     HARD = 2
 
+
 class InvalidMove(Exception):
     move: str
 class InvalidState(Exception):
@@ -40,6 +40,17 @@ def make_user_move(state:Fen, move:str) -> Fen:
 
 
 def make_ai_move(state:Fen, diff:Difficulty) -> Fen:
+    if diff == Difficulty.EASY:
+        sf.set_skill_level(0)
+        sf.set_depth(5)
+    elif diff == Difficulty.MEDIUM:
+        sf.set_skill_level(10)
+        sf.set_depth(10)
+    elif diff == Difficulty.HARD:
+        sf.set_skill_level(20)
+        sf.set_depth(15)
+
+
     sf.set_fen_position(state)
     move = sf.get_best_move()
 
