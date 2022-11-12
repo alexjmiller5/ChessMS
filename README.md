@@ -13,7 +13,7 @@ Uses CockroachDB to store persistent game state for all players.
 
 # Dependencies
 
-Python: `stockfish`, `parse`
+Python: `stockfish`, `parse`, `chess`
 
 
 # Immediate goals
