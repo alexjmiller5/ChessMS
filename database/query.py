@@ -72,20 +72,24 @@ def update_difficulty_level(phone : str, difficulty_level : int):
 def get_win(phone : str):
     return select("win", phone)
 
+def increment(attribute : str, phone : str):
+    query = "Update Users SET {at} = {at} + 1 WHERE Users.phone_number = \'{number}\'".format(at = attribute, number = phone)
+    commit(query)
+
 def update_win(phone : str):
-    pass
+    increment("win", phone)
 
 def get_loss(phone : str):
     return select("loss", phone)
 
 def update_loss(phone : str):
-    pass
+    increment("loss", phone)
 
 def get_draw(phone : str):
     return select("draw", phone)
 
 def update_draw(phone: str):
-    pass
+    increment("draw", phone)
 
 def get_everything():
     query = '''SELECT * FROM Users'''
