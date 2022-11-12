@@ -73,7 +73,8 @@ def fen_to_board(fen:str) -> Board:
     if parsed == None or isinstance(parsed, parse.Match):
         raise Exception()
 
-    b = parsed.named['b']
+    pp = parsed.named
+    b = pp['b']
     bb = [b[str(i)] for i in range(8)]
     
     return tuple(map(fen_to_rank, bb))
