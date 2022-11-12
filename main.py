@@ -43,11 +43,18 @@ def incoming_sms():
             resp.message("Easy, medium, or hard difficulty?")
             q.update_board(user_phone, "Game Initiated Black")
         elif body == "White":
-            resp.message("Easy, medium, or hard difficulty?")
+            resp.message("Easy, Medium, or Hard difficulty?")
             q.update_board(user_phone, "Game Initiated White")
         else:
             resp.message("Please choose a valid color")
     elif user_board == "Game Initiated Black":
+        if body == "Easy":
+            q.update_difficulty_level(user_phone,0)
+        elif body == "Medium":
+            q.update_difficulty_level(user_phone,1)
+        elif body == "Hard":
+            q.update_difficulty_level(user_phone,2)
+
             valid_user_moves = cm.get_legal_moves(new_user_board)
             new_user_board = STARTING_BOARD
             q.update_board(user_phone, new_user_board)
@@ -55,6 +62,13 @@ def incoming_sms():
 
             resp.message("Your move first! Good luck!\n" + new_user_board + "\nValid Moves:" + valid_user_moves)
     elif user_board == "Game Initiated White":
+        # if body == "Easy":
+        #     q.update_difficulty_level(user_phone,0)
+        # elif body == "Medium":
+        #     q.update_difficulty_level(user_phone,1)
+        # elif body == "Hard":
+        #     q.update_difficulty_level(user_phone,2)
+            
             new_user_board = STARTING_BOARD
             new_user_board = cm.make_ai_move(new_user_board)
             q.update_board(user_phone, new_user_board)
@@ -69,26 +83,26 @@ def incoming_sms():
         if user_move in prev_valid_moves:
             user_moved_board = cm.make_user_move(user_board, user_move)
             if cm.is_checkmate(user_moved_board) == True:
-                num_wins = q.get_win(user_phone) + 1
+                # num_wins = q.get_win(user_phone) + 1
                 q.update_board(user_phone, "")
-                q.update_draw(user_phone, num_wins)
+                # q.update_draw(user_phone, num_wins)
                 resp.message("Congradulations! You won! You have {num_wins} wins total".format)
             elif cm.is_stalemate(user_moved_board) == True:
-                num_draws = q.get_draw(user_phone) + 1
+                # num_draws = q.get_draw(user_phone) + 1
                 q.update_board(user_phone, "")
-                q.update_draw(user_phone, num_draws)
+                # q.update_draw(user_phone, num_draws)
                 resp.message("Oh no! A stalemate has been reached. You have {num_draws} total".format)
             else:
                 new_user_board = cm.make_ai_move(user_moved_board)
                 if cm.is_checkmate(new_user_board) == True:
-                    num_losses = q.get_loss(user_phone) + 1
+                    # num_losses = q.get_loss(user_phone) + 1
                     q.update_board(user_phone, "")
-                    q.update_loss(user_phone, num_losses)
+                    # q.update_loss(user_phone, num_losses)
                     resp.message("Oh no! You lost. You have {num_losses} losses total".format)
                 elif cm.is_stalemate(new_user_board) == True:
-                    num_draws = q.get_draw(user_phone) + 1
+                    # num_draws = q.get_draw(user_phone) + 1
                     q.update_board(user_phone, "")
-                    q.update_draw(user_phone, num_draws)
+                    # q.update_draw(user_phone, num_draws)
                     resp.message("Oh no! A stalemate has been reached. You have {num_draws} total".format)
                 else: 
                     q.update_board(user_phone, new_user_board)
