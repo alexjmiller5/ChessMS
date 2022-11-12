@@ -5,18 +5,8 @@ from typing import List, Tuple, Optional
 from dataclasses import dataclass
 from enum import Enum
 import parse
-
-class Color(Enum):
-    BLACK = 0
-    WHITE = 1
-
-class PieceType(Enum):
-    PAWN = 0
-    KNIGHT = 1
-    BISHOP = 2
-    ROOK = 3
-    QUEEN = 4
-    KING = 5
+from chess import Color, PieceType
+import chess
 
 
 Piece = Tuple[Color, PieceType]
@@ -26,25 +16,17 @@ Board = Tuple[Rank,Rank,Rank,Rank,Rank,Rank,Rank,Rank]
 
 
 
-#@dataclass(frozen=True)
-#class FEN:
-#    ranks: List[str]
-#    white_to_move: bool
-#    castles: Tuple[bool,bool,bool,bool]
-#    # 
-
-
 fen_parse = parse.compile(
     '{b[0]}/{b[1]}/{b[2]}/{b[3]}/{b[4]}/{b[5]}/{b[6]}/{b[7]} {turn} {castling} {passant} {halfmove} {fullmove}'
 )
 
 fen_pieces = {
-    PieceType.PAWN: 'p',
-    PieceType.BISHOP: 'b',
-    PieceType.KNIGHT: 'n',
-    PieceType.QUEEN: 'q',
-    PieceType.KING: 'k',
-    PieceType.ROOK: 'r'
+    chess.PAWN: 'p',
+    chess.BISHOP: 'b',
+    chess.KNIGHT: 'n',
+    chess.QUEEN: 'q',
+    chess.KING: 'k',
+    chess.ROOK: 'r'
 }
 
 piece_fens = {v:k for k,v in fen_pieces.items()}
@@ -52,7 +34,7 @@ piece_fens = {v:k for k,v in fen_pieces.items()}
 def fen_to_piece(fen:str) -> Piece:
     lower = fen.lower()
     piece_type = piece_fens[lower]
-    color = Color.BLACK if fen == lower else Color.WHITE
+    color = chess.BLACK if fen == lower else chess.WHITE
     return (color, piece_type)
 
 def fen_to_rank(fen:str) -> Rank:
@@ -87,7 +69,7 @@ def square_to_ascii(sq:Square) -> str:
     
     color, piece = sq
     s = fen_pieces[piece]
-    if color == Color.WHITE:
+    if color == chess.WHITE:
         s = s.upper()
     return s
 
