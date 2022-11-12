@@ -47,6 +47,11 @@ def check_user_exist(phone: str) -> bool:
     print(result)
     return result[0] == 1
 
+
+def select(attribute : str, phone : str):
+    query = "SELECT {at} FROM Users WHERE phone_number = \'{number}\'".format(at = attribute, number = phone)
+    return get(query)[0]
+
 def update_board(phone : str, board : str):
     query = "Update Users SET board = \'{b}\' WHERE Users.phone_number = \'{number}\'".format(b = board, number = phone)
     commit(query)
@@ -56,27 +61,32 @@ def get_board_for(phone : str):
     return get(query)[0]
 
 def get_difficulty_level_for(phone : str):
-    query = "SELECT difficulty_level FROM Users WHERE phone_number = \'{number}\'".format(number = phone)
-    return get(query)[0]
+    return select("difficulty_level", phone)
 
 def update_difficulty_level(phone : str, difficulty_level : int):
     query = "Update Users SET difficulty_level = {d_l} WHERE Users.phone_number = \'{number}\'".format(d_l = difficulty_level, number = phone)
     commit(query)
 
+def get_win(phone : str):
+    return select("win", phone)
+
 def update_win(phone : str):
     pass
 
-def update_loss(phone: str):
+def get_loss(phone : str):
+    return select("loss", phone)
+
+def update_loss(phone : str):
     pass
+
+def get_draw(phone : str):
+    return select("draw", phone)
 
 def update_draw(phone: str):
-    pass
-
-def get_win(phone : str):
     pass
 
 def get_everything():
     query = '''SELECT * FROM Users'''
     return get(query)
 
-print(get_board_for("617"))
+print(get_difficulty_level_for("617"))
