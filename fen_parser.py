@@ -15,21 +15,11 @@ Rank = Tuple[Square,Square,Square,Square,Square,Square,Square,Square]
 Board = Tuple[Rank,Rank,Rank,Rank,Rank,Rank,Rank,Rank]
 
 
-
 fen_parse = parse.compile(
     '{b[0]}/{b[1]}/{b[2]}/{b[3]}/{b[4]}/{b[5]}/{b[6]}/{b[7]} {turn} {castling} {passant} {halfmove} {fullmove}'
 )
 
-fen_pieces = {
-    chess.PAWN: 'p',
-    chess.BISHOP: 'b',
-    chess.KNIGHT: 'n',
-    chess.QUEEN: 'q',
-    chess.KING: 'k',
-    chess.ROOK: 'r'
-}
-
-piece_fens = {v:k for k,v in fen_pieces.items()}
+piece_fens = {v:k for k,v in enumerate(chess.PIECE_SYMBOLS)}
 
 def fen_to_piece(fen:str) -> Piece:
     lower = fen.lower()
@@ -68,7 +58,7 @@ def square_to_ascii(sq:Square) -> str:
         return '-'
     
     color, piece = sq
-    s = fen_pieces[piece]
+    s = chess.PIECE_SYMBOLS[piece]
     if color == chess.WHITE:
         s = s.upper()
     return s
@@ -83,5 +73,16 @@ def board_to_ascii(board:Board) -> str:
 def fen_to_ascii(fen:str) -> str:
     return board_to_ascii(fen_to_board(fen))
 
+def char_to_unicode(c:str) -> str:
+    if c in chess.UNICODE_PIECE_SYMBOLS:
+        return chess.UNICODE_PIECE_SYMBOLS[c]
+    else: return c
+
+def fen_to_unicode(fen:str) -> str:
+    s = fen_to_ascii(fen)
+    return ''.join(map(char_to_unicode, s))
+
+
 if __name__ == '__main__':
     print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print(fen_to_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))

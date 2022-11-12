@@ -17,6 +17,11 @@ Fen = str  # Chessboard state
 
 sf = Stockfish()
 
+class Difficulty(Enum):
+    EASY = 0
+    MEDIUM = 1
+    HARD = 2
+
 class InvalidMove(Exception):
     move: str
 class InvalidState(Exception):
@@ -34,7 +39,7 @@ def make_user_move(state:Fen, move:str) -> Fen:
     return sf.get_fen_position()
 
 
-def make_ai_move(state:Fen) -> Fen:
+def make_ai_move(state:Fen, diff:Difficulty) -> Fen:
     sf.set_fen_position(state)
     move = sf.get_best_move()
 
