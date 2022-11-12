@@ -83,5 +83,15 @@ def board_to_ascii(board:Board) -> str:
 def fen_to_ascii(fen:str) -> str:
     return board_to_ascii(fen_to_board(fen))
 
+def char_to_unicode(c:str) -> str:
+    if c in chess.UNICODE_PIECE_SYMBOLS:
+        return chess.UNICODE_PIECE_SYMBOLS[c]
+    else: return c
+
+def fen_to_unicode(fen:str) -> str:
+    s = fen_to_ascii(fen)
+    return ''.join(map(char_to_unicode, s))
+
+
 if __name__ == '__main__':
-    print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print(fen_to_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
