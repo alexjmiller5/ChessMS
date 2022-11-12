@@ -26,6 +26,14 @@ Get it running locally
 
 Choose at start of game to be white or black
 
+User commands:
+ - `start`: begin a game. If a game is currently running, confirm whether to end current game
+ - `forfeit`: user ends current game.
+
+## Starting a game
+
+ - Ask if user wants to be `white`, `black`, or `random`
+ - Ask for difficulty. Either `easy`/`medium`/`hard`, or accept specific ELO
 
 # Optional goals
 
@@ -46,3 +54,5 @@ User chooses certain game settings
  - ELO rating
 
 Deliberately add a delay to text response
+
+Track lifetime wins/losses/draws
