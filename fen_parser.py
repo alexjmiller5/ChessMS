@@ -25,6 +25,7 @@ Rank = Tuple[Square,Square,Square,Square,Square,Square,Square,Square]
 Board = Tuple[Rank,Rank,Rank,Rank,Rank,Rank,Rank,Rank]
 
 
+
 #@dataclass(frozen=True)
 #class FEN:
 #    ranks: List[str]
@@ -73,7 +74,8 @@ def fen_to_board(fen:str) -> Board:
     if parsed == None or isinstance(parsed, parse.Match):
         raise Exception()
 
-    b = parsed.named['b']
+    pp = parsed.named
+    b = pp['b']
     bb = [b[str(i)] for i in range(8)]
     
     return tuple(map(fen_to_rank, bb))
@@ -99,4 +101,5 @@ def board_to_ascii(board:Board) -> str:
 def fen_to_ascii(fen:str) -> str:
     return board_to_ascii(fen_to_board(fen))
 
-print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+if __name__ == '__main__':
+    print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
