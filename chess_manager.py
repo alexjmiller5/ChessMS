@@ -3,8 +3,9 @@
 from stockfish import Stockfish, StockfishException
 import fen_parser
 from enum import Enum
-from typing import Tuple
+from typing import List
 import chess
+from chess import Move
 
 STARTING_BOARD = chess.STARTING_FEN
 
@@ -44,9 +45,23 @@ def make_ai_move(state:Fen) -> Fen:
     return sf.get_fen_position()
 
 
-def get_legal_moves(state:Fen):
-    board = chess.Board(fen = state)
-    return board.legal_moves
+
+def sf_to_obj(sf:str) -> Move:
+    from_square = chess.parse_square(sf[:2])
+    to_square   = chess.parse_square(sf[2:])
+    return Move(from_square, to_square)
+
+def obj_to_sf(obj:Move) -> str:
+    from_square = chess.square_name(obj.from_square)
+    to_square   = chess.square_name(obj.to_square)
+    return from_square + to_square
+
+
+
+def get_legal_moves(state:Fen) -> List[str]:
+    moves = list(chess.Board(fen=state).legal_moves)
+    return list(map(obj_to_sf, moves))
+
 
 
 def is_check(state:Fen):
@@ -60,11 +75,9 @@ def is_stalemate(state:Fen):
 
 
 if __name__ == '__main__':
-    b = chess.Board(fen=STARTING_BOARD)
-    moves = list(map(b.lan, b.generate_legal_moves()))
-    print(moves)
-
-    make_user_move(STARTING_BOARD, 'b5c6')
+    #b = chess.Board(fen=STARTING_BOARD)
+    print(get_legal_moves(STARTING_BOARD))
+    #make_user_move(STARTING_BOARD, 'b5c6')
 
     #state = STARTING_BOARD
     #print(fen_parser.fen_to_ascii(state) + '\n')
