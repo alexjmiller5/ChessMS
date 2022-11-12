@@ -20,6 +20,8 @@ app = Flask(__name__)
 
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
+
+    print("incoming_sms() started")
     
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None) 
@@ -28,8 +30,10 @@ def incoming_sms():
     # Start our TwiML response
     resp = MessagingResponse() 
 
+    print("user phone number = " + str(user_phone))
+
     # check database to see if client has been here before
-    if q.check_user_exists == False:
+    if q.check_user_exist(user_phone) == False:
         q.create_user(user_phone)
     
     if body == "Let's play chess!":
@@ -73,7 +77,7 @@ def incoming_sms():
             new_user_board = cm.make_ai_move(new_user_board)
             q.update_board(user_phone, new_user_board)
 
-            new_user_board = fen_to_ascii(new_user_board)
+            new_user_board = fp.fen_to_ascii(new_user_board)
             valid_user_moves = cm.get_legal_moves(new_user_board)
 
             resp.message("Here's my first move! Good luck!\n" + new_user_board + "\nValid Moves:" + valid_user_moves)
