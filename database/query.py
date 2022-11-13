@@ -28,7 +28,8 @@ def get(query):
 
     with connection.cursor() as cur:
         cur.execute(query)
-        result = cur.fetchone()
+        result = cur.fetchall()
+        print(result)
         connection.commit()
 
     # Close communication with the database
@@ -38,7 +39,7 @@ def get(query):
     return result
 
 def create_user(phone : str):
-    query = "INSERT INTO Users (phone_number) VALUES ({number})".format(number = phone)
+    query = "INSERT INTO Users (phone_number) VALUES (\'{number}\')".format(number = phone)
     commit(query)
 
 def check_user_exist(phone: str) -> bool:
@@ -94,3 +95,5 @@ def update_draw(phone: str):
 def get_everything():
     query = '''SELECT * FROM Users'''
     return get(query)
+
+get_everything()

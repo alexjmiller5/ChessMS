@@ -18,8 +18,7 @@ STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # st
 app = Flask(__name__)
 # run_with_ngrok(app)
 
-@app.route("/", methods=['GET', 'POST'])
-
+@app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
 
@@ -27,7 +26,9 @@ def incoming_sms():
     
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None) 
-    user_phone = request.values.get('from', None)
+    user_phone = request.values.get('From', None)
+
+    # user_phone_num = request.form["From"]
 
     print("request.values is: ")
     print(request.values)
@@ -36,6 +37,11 @@ def incoming_sms():
     resp = MessagingResponse() 
 
     print("user phone number = " + str(user_phone))
+    # print("user phone number = " + str(user_phone_num))
+    print("user text = " + body)
+
+    if user_phone == None:
+        return
 
     # check database to see if client has been here before
     if q.check_user_exist(user_phone) == False:
