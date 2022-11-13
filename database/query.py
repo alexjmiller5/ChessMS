@@ -28,7 +28,7 @@ def get(query):
 
     with connection.cursor() as cur:
         cur.execute(query)
-        result = cur.fetchall()
+        result = cur.fetchone()
         print(result)
         connection.commit()
 
@@ -95,5 +95,3 @@ def update_draw(phone: str):
 def get_everything():
     query = '''SELECT * FROM Users'''
     return get(query)
-
-get_everything()
