@@ -13,8 +13,7 @@ import database.query as q
 # auth_token = '91348d25f4044be9d69bdd9c2ed3db9a' # replace later with os.environ[]
 # client = Client(account_sid, auth_token)
 
-# STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # starting chess board
-STARTING_BOARD = "KR1q3Q/8/6k1/8/8/8/8/8 b - - 0 2"
+STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # starting chess board
 
 app = Flask(__name__)
 # run_with_ngrok(app)
@@ -70,9 +69,7 @@ def incoming_sms():
             q.update_board(user_phone, new_user_board)
             valid_user_moves = cm.get_legal_moves(new_user_board)
             new_user_board = fp.fen_to_unicode(new_user_board)
-            valid_user_moves = str(valid_user_moves)
-            valid_user_moves = valid_user_moves[1:-1]
-            valid_user_moves = valid_user_moves.replace(',',' ')
+            valid_user_moves = ', '.join(valid_user_moves)
             resp.message("Your move first! Good luck!\n" + new_user_board + "\nValid Moves:\n" + valid_user_moves)
 
     elif user_board == "Game Initiated Black":
@@ -89,9 +86,7 @@ def incoming_sms():
             valid_user_moves = cm.get_legal_moves(new_user_board)
             q.update_board(user_phone, new_user_board)
             new_user_board = fp.fen_to_unicode(new_user_board)
-            valid_user_moves = str(valid_user_moves)
-            valid_user_moves = valid_user_moves[1:-1]
-            valid_user_moves = valid_user_moves.replace(',',' ')
+            valid_user_moves = ', '.join(valid_user_moves)
             resp.message("Here's my first move! Good luck!\n" + new_user_board + "\nValid Moves:\n" + valid_user_moves)
         
     elif user_board != "":
@@ -136,9 +131,7 @@ def incoming_sms():
                 else: 
                     q.update_board(user_phone, new_user_board)
                     valid_user_moves = cm.get_legal_moves(new_user_board)
-                    valid_user_moves = str(valid_user_moves)
-                    valid_user_moves = valid_user_moves[1:-1]
-                    valid_user_moves = valid_user_moves.replace(',',' ')
+                    valid_user_moves = ', '.join(valid_user_moves)
                     if cm.is_check(new_user_board) == True:
                         print("The user is in check!")
                         new_user_board = fp.fen_to_unicode(new_user_board)
@@ -148,6 +141,7 @@ def incoming_sms():
                         print("The user is performing a standard move")
                         new_user_board = fp.fen_to_unicode(new_user_board)
                         resp.message("\n" + new_user_board + "\nValid Moves:\n" + valid_user_moves)
+                        
         
         else:
             resp.message("Invalid move, please send a valid move")
