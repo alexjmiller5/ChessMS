@@ -76,6 +76,8 @@ def fen_to_ascii(fen:str) -> str:
     return board_to_ascii(fen_to_board(fen))
 
 def char_to_unicode(c:str) -> str:
+    if c == 'p':
+        return '▲'
     if c in chess.UNICODE_PIECE_SYMBOLS:
         return chess.UNICODE_PIECE_SYMBOLS[c]
     elif c == BLANK:
