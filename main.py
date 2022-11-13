@@ -27,7 +27,8 @@ def incoming_sms():
     
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None) 
-    user_phone = request.values.get('from', None)
+    user_phone = request.values.get('From', None)
+    # user_phone = user_phone[1:]
 
     print("request.values is: ")
     print(request.values)
@@ -57,12 +58,12 @@ def incoming_sms():
         else:
             resp.message("Please choose a valid color")
     elif user_board == "Game Initiated Black":
-        if body == "Easy":
-            q.update_difficulty_level(user_phone,0)
-        elif body == "Medium":
-            q.update_difficulty_level(user_phone,1)
-        elif body == "Hard":
-            q.update_difficulty_level(user_phone,2)
+        # if body == "Easy":
+        #     q.update_difficulty_level(user_phone,0)
+        # elif body == "Medium":
+        #     q.update_difficulty_level(user_phone,1)
+        # elif body == "Hard":
+        #     q.update_difficulty_level(user_phone,2)
 
             valid_user_moves = cm.get_legal_moves(new_user_board)
             new_user_board = STARTING_BOARD
@@ -95,24 +96,24 @@ def incoming_sms():
                 # num_wins = q.get_win(user_phone) + 1
                 q.update_board(user_phone, "")
                 # q.update_draw(user_phone, num_wins)
-                resp.message("Congradulations! You won! You have {num_wins} wins total".format)
+                # resp.message(f'Congradulations! You won! You have {num_wins} wins total')
             elif cm.is_stalemate(user_moved_board) == True:
                 # num_draws = q.get_draw(user_phone) + 1
                 q.update_board(user_phone, "")
                 # q.update_draw(user_phone, num_draws)
-                resp.message("Oh no! A stalemate has been reached. You have {num_draws} total".format)
+                # resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
             else:
                 new_user_board = cm.make_ai_move(user_moved_board)
                 if cm.is_checkmate(new_user_board) == True:
                     # num_losses = q.get_loss(user_phone) + 1
                     q.update_board(user_phone, "")
                     # q.update_loss(user_phone, num_losses)
-                    resp.message("Oh no! You lost. You have {num_losses} losses total".format)
+                    resp.message(f'Oh no! You lost. You have {num_losses} losses total')
                 elif cm.is_stalemate(new_user_board) == True:
                     # num_draws = q.get_draw(user_phone) + 1
                     q.update_board(user_phone, "")
                     # q.update_draw(user_phone, num_draws)
-                    resp.message("Oh no! A stalemate has been reached. You have {num_draws} total".format)
+                    # resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
                 else: 
                     q.update_board(user_phone, new_user_board)
                     new_user_board = fp.fen_to_ascii(new_user_board)
