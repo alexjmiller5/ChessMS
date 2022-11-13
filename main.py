@@ -2,6 +2,7 @@ import os
 from twilio.rest import Client
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+from flask_ngrok import run_with_ngrok
 
 # imported local files
 import chess_manager as cm
@@ -15,8 +16,9 @@ import database.query as q
 STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # starting chess board
 
 app = Flask(__name__)
+run_with_ngrok(app)
 
-@app.route("/sms", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
@@ -26,6 +28,9 @@ def incoming_sms():
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None) 
     user_phone = request.values.get('from', None)
+
+    print("request.values is: ")
+    print(request.values)
 
     # Start our TwiML response
     resp = MessagingResponse() 
@@ -122,4 +127,4 @@ def incoming_sms():
     return str(resp)
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run()
