@@ -44,7 +44,8 @@ def incoming_sms():
     print(f"Retrieved board \"{user_board}\" from the database from user \"{user_phone}\"")
 
     if body == "let's play chess!" or body == "let's play chess" or body == "lets play chess":
-        resp.message("Black or White?")
+        board = fp.fen_to_unicode(STARTING_BOARD)
+        resp.message("Black or White?" + "\n" + board)
         q.update_board(user_phone, "Game Initiated")
 
     elif user_board == "Game Initiated":

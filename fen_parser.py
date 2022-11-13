@@ -77,11 +77,11 @@ def fen_to_ascii(fen:str) -> str:
 
 def char_to_unicode(c:str) -> str:
     if c == 'p':
-        return '▲'
+        return chr(9709)
     if c in chess.UNICODE_PIECE_SYMBOLS:
         return chess.UNICODE_PIECE_SYMBOLS[c]
     elif c == BLANK:
-        return '-'
+        return chr(8211)
     else: 
         return c
 
