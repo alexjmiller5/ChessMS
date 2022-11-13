@@ -104,10 +104,11 @@ def fen_to_boxed_ascii(fen:str) -> str:
     return boxify(fen_to_ascii(fen))
 
 if __name__ == '__main__':
-    print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
-    print()
-    print(fen_to_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
-    print()
-    print(fen_to_boxed_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
-    print()
-    print(fen_to_boxed_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    print(fen_to_unicode('1nbqkbnr/rpNppppp/p7/3P4/Q1P1PB2/5N2/PP2BPPP/R3K2R b KQk - 0 11'))
+    # print(fen_to_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    # print()
+    # print(fen_to_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    # print()
+    # print(fen_to_boxed_unicode('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
+    # print()
+    # print(fen_to_boxed_ascii('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'))
