@@ -29,6 +29,7 @@ def get(query):
     with connection.cursor() as cur:
         cur.execute(query)
         result = cur.fetchone()
+        print(result)
         connection.commit()
 
     # Close communication with the database
@@ -38,7 +39,7 @@ def get(query):
     return result
 
 def create_user(phone : str):
-    query = "INSERT INTO Users (phone_number) VALUES ({number})".format(number = phone)
+    query = "INSERT INTO Users (phone_number) VALUES (\'{number}\')".format(number = phone)
     commit(query)
 
 def check_user_exist(phone: str) -> bool:
