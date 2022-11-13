@@ -2,7 +2,7 @@ import os
 from twilio.rest import Client
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
-from flask_ngrok import run_with_ngrok
+# from flask_ngrok import run_with_ngrok
 
 # imported local files
 import chess_manager as cm
@@ -16,7 +16,7 @@ import database.query as q
 STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # starting chess board
 
 app = Flask(__name__)
-run_with_ngrok(app)
+# run_with_ngrok(app)
 
 @app.route("/", methods=['GET', 'POST'])
 
@@ -127,4 +127,4 @@ def incoming_sms():
     return str(resp)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5000, debug=True)
