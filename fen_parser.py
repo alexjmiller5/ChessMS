@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 import parse
 from chess import Color, PieceType
-import chess
+import chess, chess.svg
 
 
 Piece = Tuple[Color, PieceType]
@@ -102,6 +102,15 @@ def fen_to_boxed_unicode(fen:str) -> str:
     
 def fen_to_boxed_ascii(fen:str) -> str:
     return boxify(fen_to_ascii(fen))
+
+def fen_to_svg(fen:str) -> str:
+    b = chess.Board(fen=fen)
+    return chess.svg.board(b)
+
+def fen_to_svg_file(fen:str, path:str) -> None:
+    svg = fen_to_svg(fen)
+    with open(path, 'w') as fo:
+        fo.write(svg)
 
 if __name__ == '__main__':
     print(fen_to_unicode('1nbqkbnr/rpNppppp/p7/3P4/Q1P1PB2/5N2/PP2BPPP/R3K2R b KQk - 0 11'))
