@@ -26,7 +26,7 @@ def incoming_sms():
     
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None) 
-    user_phone = request.values.get('from', None)
+    user_phone = request.values.get('From', None)
 
     print("request.values is: ")
     print(request.values)
