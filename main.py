@@ -14,6 +14,7 @@ import database.query as q
 # client = Client(account_sid, auth_token)
 
 STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # starting chess board
+# STARTING_BOARD = '2K5/q5QQ/4k3/8/8/8/8/8 b - - 0 2' # example board where white is about to win
 
 app = Flask(__name__)
 # run_with_ngrok(app)
@@ -44,8 +45,7 @@ def incoming_sms():
     print(f"Retrieved board \"{user_board}\" from the database from user \"{user_phone}\"")
 
     if body == "let's play chess!" or body == "let's play chess" or body == "lets play chess":
-        board = fp.fen_to_unicode(STARTING_BOARD)
-        resp.message("Black or White?" + "\n" + board)
+        resp.message("Black or White?")
         q.update_board(user_phone, "Game Initiated")
 
     elif user_board == "Game Initiated":
@@ -136,12 +136,12 @@ def incoming_sms():
                     if cm.is_check(new_user_board) == True:
                         print("The user is in check!")
                         new_user_board = fp.fen_to_unicode(new_user_board)
-                        resp.message("\n" + new_user_board + "\nYou're in Check!\nValid Moves:\n" + valid_user_moves)
+                        resp.message("Here is the board state:\n" + new_user_board + "\nYou're in Check!\nValid Moves:\n" + valid_user_moves)
                     
                     else:
                         print("The user is performing a standard move")
                         new_user_board = fp.fen_to_unicode(new_user_board)
-                        resp.message("\n" + new_user_board + "\nValid Moves:\n" + valid_user_moves)
+                        resp.message("Here is the board state:\n" + new_user_board + "\nValid Moves:\n" + valid_user_moves)
                         
         
         else:

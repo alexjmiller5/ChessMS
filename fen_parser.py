@@ -81,7 +81,7 @@ def char_to_unicode(c:str) -> str:
     if c in chess.UNICODE_PIECE_SYMBOLS:
         return chess.UNICODE_PIECE_SYMBOLS[c]
     elif c == BLANK:
-        return chr(8211)
+        return chr(8210)
     else: 
         return c
 
