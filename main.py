@@ -18,7 +18,7 @@ STARTING_BOARD = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" # st
 app = Flask(__name__)
 # run_with_ngrok(app)
 
-@app.route("/sms", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
 
@@ -33,7 +33,7 @@ def incoming_sms():
 
     # Start our TwiML response
     resp = MessagingResponse() 
-
+    
     print("user phone number = " + str(user_phone))
     # print("user phone number = " + str(user_phone_num))
     print("user text = " + body)
@@ -44,14 +44,13 @@ def incoming_sms():
     # check database to see if client has been here before
     if q.check_user_exist(user_phone) == False:
         q.create_user(user_phone)
-    
-    if body == "Let's play chess!":
-        resp.message("Black or White?")
-        q.update_board(user_phone, "Game Initiated")
 
     user_board = q.get_board_for(user_phone)
 
-    if user_board == "Game Initiated":
+    if body == "Let's play chess!":
+        resp.message("Black or White?")
+        q.update_board(user_phone, "Game Initiated")
+    elif user_board == "Game Initiated":
         if body == "Black":
             resp.message("Easy, medium, or hard difficulty?")
             q.update_board(user_phone, "Game Initiated Black")
@@ -67,13 +66,15 @@ def incoming_sms():
         #     q.update_difficulty_level(user_phone,1)
         # elif body == "Hard":
         #     q.update_difficulty_level(user_phone,2)
-
-            valid_user_moves = cm.get_legal_moves(new_user_board)
             new_user_board = STARTING_BOARD
+            valid_user_moves = cm.get_legal_moves(new_user_board)
+            new_user_board = cm.make_ai_move(new_user_board, 0)
             q.update_board(user_phone, new_user_board)
-            new_user_board = fp.fen_to_ascii(new_user_board)
+            
+            new_user_board = fp.fen_to_unicode(new_user_board)
 
-            resp.message("Your move first! Good luck!\n" + new_user_board + "\nValid Moves:" + valid_user_moves)
+            resp.message("Here's my first move! Good luck!\n" + new_user_board + "\nValid Moves:\n" + str(valid_user_moves[2:len(valid_user_moves)-2]))
+            
     elif user_board == "Game Initiated White":
         # if body == "Easy":
         #     q.update_difficulty_level(user_phone,0)
@@ -81,53 +82,55 @@ def incoming_sms():
         #     q.update_difficulty_level(user_phone,1)
         # elif body == "Hard":
         #     q.update_difficulty_level(user_phone,2)
-            
             new_user_board = STARTING_BOARD
-            new_user_board = cm.make_ai_move(new_user_board)
+            
             q.update_board(user_phone, new_user_board)
-
-            new_user_board = fp.fen_to_ascii(new_user_board)
             valid_user_moves = cm.get_legal_moves(new_user_board)
+            new_user_board = fp.fen_to_unicode(new_user_board)
 
-            resp.message("Here's my first move! Good luck!\n" + new_user_board + "\nValid Moves:" + valid_user_moves)
+            resp.message("Your move first! Good luck!\n" + new_user_board + "\nValid Moves:\n" + str(valid_user_moves[2:len(valid_user_moves)-2]))
+            
     elif user_board != "":
         user_move = body
         prev_valid_moves = cm.get_legal_moves(user_board)
         if user_move in prev_valid_moves:
             user_moved_board = cm.make_user_move(user_board, user_move)
             if cm.is_checkmate(user_moved_board) == True:
-                # num_wins = q.get_win(user_phone) + 1
+                num_wins = q.get_win(user_phone) + 1
                 q.update_board(user_phone, "")
-                # q.update_draw(user_phone, num_wins)
-                # resp.message(f'Congradulations! You won! You have {num_wins} wins total')
+                q.update_draw(user_phone, num_wins)
+                resp.message(f'Congradulations! You won! You have {num_wins} wins total')
             elif cm.is_stalemate(user_moved_board) == True:
-                # num_draws = q.get_draw(user_phone) + 1
+                num_draws = q.get_draw(user_phone) + 1
                 q.update_board(user_phone, "")
-                # q.update_draw(user_phone, num_draws)
-                # resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
+                q.update_draw(user_phone, num_draws)
+                resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
             else:
-                new_user_board = cm.make_ai_move(user_moved_board)
+                new_user_board = cm.make_ai_move(user_moved_board, 0)
                 if cm.is_checkmate(new_user_board) == True:
-                    # num_losses = q.get_loss(user_phone) + 1
+                    num_losses = q.get_loss(user_phone) + 1
                     q.update_board(user_phone, "")
-                    # q.update_loss(user_phone, num_losses)
+                    q.update_loss(user_phone, num_losses)
                     resp.message(f'Oh no! You lost. You have {num_losses} losses total')
                 elif cm.is_stalemate(new_user_board) == True:
-                    # num_draws = q.get_draw(user_phone) + 1
+                    num_draws = q.get_draw(user_phone) + 1
                     q.update_board(user_phone, "")
-                    # q.update_draw(user_phone, num_draws)
-                    # resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
+                    q.update_draw(user_phone, num_draws)
+                    resp.message(f'Oh no! A stalemate has been reached. You have {num_draws} total')
                 else: 
                     q.update_board(user_phone, new_user_board)
-                    new_user_board = fp.fen_to_ascii(new_user_board)
                     valid_next_moves = cm.get_legal_moves(new_user_board)
+                    
                     if cm.is_check(new_user_board) == True:
-                        resp.message(new_user_board + "\nYou're in Check!\nValid Moves:" + valid_next_moves)
+                        new_user_board = fp.fen_to_unicode(new_user_board)
+                        resp.message(new_user_board + "\nYou're in Check!\nValid Moves:\n" + str(valid_user_moves[2:len(valid_user_moves)-2]))
                     else:
-                        resp.message(new_user_board + "\nValid Moves:" + valid_next_moves)
+                        new_user_board = fp.fen_to_unicode(new_user_board)
+                        resp.message(new_user_board + "\nValid Moves:\n" + str(valid_user_moves[2:len(valid_user_moves)-2]))
         else:
             resp.message("Invalid move, please send a valid move")
 
+    print(resp)
     return str(resp)
 
 if __name__ == "__main__":
