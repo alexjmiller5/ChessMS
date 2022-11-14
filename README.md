@@ -4,6 +4,8 @@ By Ruihang Liu, Alex Miller, Jared Pincus
 
 [Hackathon submission](https://devpost.com/software/chessms-8ta6j9)
 
+Winner of "Best Use of CockroachDB" at [BostonHacks 2022](https://bostonhacks-2022.devpost.com/)
+
 # Project
 
 SMS-based game AI
@@ -14,7 +16,7 @@ Uses CockroachDB to store persistent game state for all players.
 
 # Dependencies
 
-Python: `stockfish`, `parse`, `chess`, `flask`, twilio, psycopg[binary]
+Python: `stockfish`, `parse`, `chess`, `flask`, `twilio`, `psycopg` [binary]
 
 
 # Immediate goals
