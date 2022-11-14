@@ -1,7 +1,8 @@
-# BostonHacks 2022
+# ChessMS
 
-Alex Miller, Jared Pincus, Ruihang Liu
+By Ruihang Liu, Alex Miller, Jared Pincus
 
+[Hackathon submission](https://devpost.com/software/chessms-8ta6j9)
 
 # Project
 
